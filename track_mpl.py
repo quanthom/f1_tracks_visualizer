@@ -63,13 +63,6 @@ COORD_ADJUST_FACTORS = {
 }
 
 class F1Trace:
-    # Set the year, weekend, session, and driver name
-    colormap = mpl.cm.plasma
-    
-    session = None
-    displayed = False
-    clearPlot = False
-
     def __init__(self, year, event, session, driver):
         self.year = year
         self.driver = driver
@@ -89,6 +82,13 @@ class F1Trace:
 
     def clear_plot(self, val):
         self.ax.cla()
+        self.plot_track()
+        plt.show()
+
+    def plot_track(self):
+        mapimg = mpimg.imread(RACE_MAP[self.event.Country])
+        self.ax.imshow(mapimg)
+        self.ax.autoscale(enable=False)
 
     # Create a LineCollection object to display the telemetry data as a racing line
     def update(self, val):
@@ -99,21 +99,15 @@ class F1Trace:
         speed = lap.telemetry['Speed']
 
         # Get the event name for the session
-        event_name = self.session.event.get_race()
+        event_name = str(self.session)
 
-        self.ax.set_title(f'{self.driver} Qualifying Lap {self.lap_number} at {event_name} ({self.year})')
+        self.ax.set_title(f'{self.driver} Lap {self.lap_number} at {event_name}')
         self.ax.set_xlabel('X position (m)')
         self.ax.set_ylabel('Y position (m)')
         self.ax.set_aspect('equal')
 
-        # display map
-        mapimg = mpimg.imread(RACE_MAP[self.event.Country])
-        self.ax.imshow(mapimg)
-        self.ax.autoscale(enable=False)
-
         # Rotate trace to fit map
         adjust = COORD_ADJUST_FACTORS[self.event.Country]
-        # adjust = CoordAdjust(xs=0.715, ys=0.715, xo=125, yo=30, rot=182.0, xmir=True)
         x, y = adjust.rotate(x, y)
 
         # Plot driver's trace
@@ -124,8 +118,6 @@ class F1Trace:
         x = x - min(x) + min(plt_xlim)
         y = y - min(y) + min(plt_ylim)
 
-
-
         points = adjust.generatePoints(x, y)
         segments = np.concatenate([points[:-1], points[1:]], axis=1)
         lc = LineCollection(segments, cmap=mpl.cm.plasma, norm=plt.Normalize(speed.min(), speed.max()))
@@ -133,8 +125,7 @@ class F1Trace:
         lc.set_linewidth(1.0)
         self.ax.add_collection(lc)
 
-        if not self.displayed:
-            plt.show()
+        plt.show()
 
 
     def start(self):
@@ -164,13 +155,14 @@ class F1Trace:
         textbox.on_text_change(self.update_lap)
         clear.on_clicked(self.clear_plot)
 
+        self.plot_track()
         plt.show()
 
 
 if __name__ == "__main__":
     year = 2021
-    track = "Azerbaijan"
-    session = 'Q'
+    track = "Azerbaijan" # Also available: "Bahrain", "Australia"
+    session = 'R' # Also 'R', 'SS', 'S', 'FP1', 'FP2', 'FP3'
     driver = 'HAM'
 
     generator = F1Trace(year, track, session, driver)
