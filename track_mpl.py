@@ -133,19 +133,15 @@ class F1Trace:
         if self.session is None:
             print("The session was not initialised")
             return
-        
-        # Load session
         self.session.load()
-
-        # Create driver instance
         self.create_driver()
 
         # Plot the track map with the racing line and color gradient
         fig, self.ax = plt.subplots(figsize=(12, 8.75))
 
-        button_ax = plt.axes([0.05, 0.7, 0.15, 0.05])
-        text_ax = plt.axes([0.05, 0.5, 0.15, 0.05])
-        clear_ax = plt.axes([0.05, 0.6, 0.15, 0.05])
+        button_ax = plt.axes([0.45, 0.92, 0.15, 0.05])
+        text_ax = plt.axes([0.25, 0.92, 0.15, 0.05])
+        clear_ax = plt.axes([0.65, 0.92, 0.15, 0.05])
 
         button = Button(button_ax, "Show next lap")
         textbox = TextBox(text_ax, f"Laps / {self.total_laps}", initial=str(self.lap_number))
