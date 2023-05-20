@@ -43,8 +43,6 @@ class CoordAdjust:
         # Apply mirroring
         x = self.x_mirror * x
         y = self.y_mirror * y
-
-        # Create an array of shape (n, 2)
         points = np.vstack((x, y)).T
 
         theta = np.radians(self.rotation)
@@ -59,8 +57,9 @@ class CoordAdjust:
 
 
 COORD_ADJUST_FACTORS = {
-    "Bahrain": CoordAdjust(1.12, 0.98, 1.12, 0, 1000),
-    "Australia": CoordAdjust(1.12, 0.98, 1.12, 0, 1000, rot=182.0, xmir=True)
+    "Bahrain": CoordAdjust(xs=0.805, ys=0.805, xo=80, yo=115, ymir=True),
+    "Australia": CoordAdjust(xs=0.715, ys=0.715, xo=125, yo=30, rot=182.0, xmir=True),
+    "Azerbaijan": CoordAdjust(xs=0.78, ys=0.77, xo=85, yo=160, rot=179.0, xmir=True)
 }
 
 class F1Trace:
@@ -74,7 +73,9 @@ class F1Trace:
     def __init__(self, year, event, session, driver):
         self.year = year
         self.driver = driver
-        self.event = ff.get_event_schedule(year).get_event_by_name(event + "Grand Prix")
+        self.event = ff.get_event_schedule(year).get_event_by_name(event + " Grand Prix")
+        if event not in self.event.Country:
+            raise Exception(f"No event found for {event} in year {year}")
         self.session = self.event.get_session(session)
 
     def create_driver(self):
@@ -89,28 +90,6 @@ class F1Trace:
     def clear_plot(self, val):
         self.ax.cla()
 
-    # def rotate_points(self, x, y, angle):
-    #     """Rotate a set of points by a given angle."""
-    #     # Create an array of shape (n, 2)
-    #     points = np.vstack((x, y)).T
-
-    #     # Convert the angle to radians
-    #     theta = np.radians(angle)
-
-    #     # Define the rotation matrix
-    #     rotation_matrix = np.array([
-    #         [np.cos(theta), -np.sin(theta)],
-    #         [np.sin(theta), np.cos(theta)],
-    #     ])
-
-    #     # Apply the rotation matrix to the points
-    #     rotated_points = np.dot(points, rotation_matrix.T)
-
-    #     # Split the rotated points back into separate x and y arrays
-    #     x_rotated, y_rotated = rotated_points[:, 0], rotated_points[:, 1]
-
-    #     return x_rotated, y_rotated
-
     # Create a LineCollection object to display the telemetry data as a racing line
     def update(self, val):
         # Get the telemetry data for the lap
@@ -122,28 +101,10 @@ class F1Trace:
         # Get the event name for the session
         event_name = self.session.event.get_race()
 
-        # # fiddling with proportion
-        # ratio = 1.12
-        # xm = x * 0.98
-        # ym = (y * 1.12 + 1000)
-        # points = np.array([xm, ym]).T.reshape(-1, 1, 2) / ratio # Fiddled with proportion to fit the map
-
-        # adjust = COORD_ADJUST_FACTORS[self.event.Country]
-        # points = adjust.generatePoints(x, y)
-        # segments = np.concatenate([points[:-1], points[1:]], axis=1)
-        # lc = LineCollection(segments, cmap=mpl.cm.plasma, norm=plt.Normalize(speed.min(), speed.max()))
-        # lc.set_array(speed)
-        # lc.set_linewidth(1.0)
-
-        # self.ax.add_collection(lc)
-        # self.ax.plot(x, y, color='black', linestyle='--', zorder=0)
         self.ax.set_title(f'{self.driver} Qualifying Lap {self.lap_number} at {event_name} ({self.year})')
         self.ax.set_xlabel('X position (m)')
         self.ax.set_ylabel('Y position (m)')
         self.ax.set_aspect('equal')
-
-        # dim = list(self.ax.get_xlim()) + list(self.ax.get_ylim())
-        # self.ax.imshow(mapimg, extent=dim)
 
         # display map
         mapimg = mpimg.imread(RACE_MAP[self.event.Country])
@@ -151,21 +112,19 @@ class F1Trace:
         self.ax.autoscale(enable=False)
 
         # Rotate trace to fit map
-        adjust = CoordAdjust(xs=0.715, ys=0.715, xo=125, yo=30, rot=182.0, xmir=True)
+        adjust = COORD_ADJUST_FACTORS[self.event.Country]
+        # adjust = CoordAdjust(xs=0.715, ys=0.715, xo=125, yo=30, rot=182.0, xmir=True)
         x, y = adjust.rotate(x, y)
-        # x, y = self.rotate_points(-x, y, 182.0)
 
         # Plot driver's trace
-        # x = (x * self.ax.get_xlim()) / max(x)
-        # y = (y * self.ax.get_ylim()) / max(y)
         plt_xlim = self.ax.get_xlim(); xq = -min(plt_xlim) + max(plt_xlim)
         plt_ylim = self.ax.get_ylim(); yq = -min(plt_ylim) + max(plt_ylim)
         xlen = -min(x) + max(x); ylen = -min(y) + max(y)
-        x = (x / xlen) * xq; y = (y / xlen) * xq  # y = (y / ylen) * yq 
+        x = (x / xlen) * xq; y = (y / xlen) * xq
         x = x - min(x) + min(plt_xlim)
         y = y - min(y) + min(plt_ylim)
 
-        # adjust = COORD_ADJUST_FACTORS[self.event.Country]
+
 
         points = adjust.generatePoints(x, y)
         segments = np.concatenate([points[:-1], points[1:]], axis=1)
@@ -173,7 +132,6 @@ class F1Trace:
         lc.set_array(speed)
         lc.set_linewidth(1.0)
         self.ax.add_collection(lc)
-        # self.ax.plot(x, y, color='black', linestyle='--', zorder=0)
 
         if not self.displayed:
             plt.show()
@@ -210,8 +168,8 @@ class F1Trace:
 
 
 if __name__ == "__main__":
-    year = 2022
-    track = "Australia"
+    year = 2021
+    track = "Azerbaijan"
     session = 'Q'
     driver = 'HAM'
 
