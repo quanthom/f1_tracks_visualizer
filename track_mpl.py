@@ -9,7 +9,7 @@ import matplotlib.image as mpimg
 
 RACE_MAP = {
     "Bahrain": "bahrain.png",
-    "Australia": "melbourne.png",
+    "Australia": "melbourne_hr.png",
     "Azerbaijan": "baku.png"
 }
 
@@ -58,7 +58,7 @@ class CoordAdjust:
 
 COORD_ADJUST_FACTORS = {
     "Bahrain": CoordAdjust(xs=0.805, ys=0.805, xo=80, yo=115, ymir=True),
-    "Australia": CoordAdjust(xs=0.715, ys=0.715, xo=125, yo=30, rot=182.0, xmir=True),
+    "Australia": CoordAdjust(xs=0.722, ys=0.718, xo=136, yo=27, rot=182.0, xmir=True),
     "Azerbaijan": CoordAdjust(xs=0.78, ys=0.77, xo=85, yo=160, rot=179.0, xmir=True)
 }
 
@@ -156,10 +156,10 @@ class F1Trace:
 
 
 if __name__ == "__main__":
-    year = 2021
-    track = "Azerbaijan" # Also available: "Bahrain", "Australia"
-    session = 'R' # Also 'R', 'SS', 'S', 'FP1', 'FP2', 'FP3'
-    driver = 'HAM'
+    year = 2018
+    track = "Australia" # Also available: "Bahrain", "Australia"
+    session = 'Q' # Also 'R', 'SS', 'S', 'FP1', 'FP2', 'FP3'
+    driver = 'VER'
 
     generator = F1Trace(year, track, session, driver)
     generator.start()
