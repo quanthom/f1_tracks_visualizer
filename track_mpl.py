@@ -8,9 +8,9 @@ import matplotlib.image as mpimg
 
 
 RACE_MAP = {
-    "Bahrain": "bahrain.png",
-    "Australia": "melbourne_hr.png",
-    "Azerbaijan": "baku.png"
+    "Bahrain": "maps/bahrain.png",
+    "Australia": "maps/melbourne_hr.png",
+    "Azerbaijan": "maps/baku.png"
 }
 
 class CoordAdjust:
