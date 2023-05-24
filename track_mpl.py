@@ -65,16 +65,17 @@ RACE_MAP = {
     "United States": "maps/miami.png"
 }
 
-
 COORD_ADJUST_FACTORS = {
-    "Bahrain": CoordAdjust(xs=0.805, ys=0.805, xo=80, yo=115, ymir=True),
-    "Australia": CoordAdjust(xs=0.722, ys=0.718, xo=136, yo=27, rot=182.0, xmir=True),
-    "Azerbaijan": CoordAdjust(xs=0.78, ys=0.77, xo=85, yo=160, rot=179.0, xmir=True),
-    "United States": CoordAdjust()
+    "Bahrain": {'q': 1.0, 'xs': 0.8, 'ys': 0.81, 'xo': 87.0, 'yo': 111.0, 'rot': 0, 'xmir': False, 'ymir': True},
+    "Australia": {'q': 1.0, 'xs': 0.735, 'ys': 0.745, 'xo': 137.0, 'yo': 20.0, 'rot': 0.7, 'xmir': False, 'ymir': True},
+    "Azerbaijan": {'q': 1.0, 'xs': 0.794, 'ys': 0.76, 'xo': 71.0, 'yo': 185.0, 'rot': -2.0, 'xmir': False, 'ymir': True},
 }
 
 
 class F1Trace:
+    default_params = {'q': 1, 'xs': 1, 'ys': 1, 'xo': 0, 'yo': 0, 'rot': 0, 'xmir': False, 'ymir': False}
+    params = {'q': 1, 'xs': 1, 'ys': 1, 'xo': 0, 'yo': 0, 'rot': 0, 'xmir': False, 'ymir': False}
+
     def __init__(self, year, event, session, driver):
         self.year = year
         self.driver = driver
@@ -119,7 +120,8 @@ class F1Trace:
         self.ax.set_aspect('equal')
 
         # Rotate trace to fit map
-        adjust = COORD_ADJUST_FACTORS[self.event.Country]
+        adjust = CoordAdjust(**COORD_ADJUST_FACTORS[self.event.Country])
+        # adjust = CoordAdjust(**self.params) # Uncomment for debugging
         segments = adjust.generate(self.ax, x, y)
         lc = LineCollection(segments, cmap=mpl.cm.plasma, norm=plt.Normalize(speed.min(), speed.max()))
         lc.set_array(speed)
@@ -128,6 +130,22 @@ class F1Trace:
 
         plt.show()
 
+    def update_params(self, text):
+        self.params = self.default_params
+        import re
+        pattern = re.compile(r"(\w+):(\-?[\w\.]+)")
+        matches = pattern.findall(text)
+        for key, value in matches:
+            if key not in ['q', 'xs', 'ys', 'xo', 'yo', 'rot', 'xmir', 'ymir']:
+                print(f"The parameter {key} is not valid")
+                return
+            if key in ['xmir', 'ymir']:
+                self.params[key] = True if value == "True" else False
+            else:
+                self.params[key] = float(value)
+        print(self.params)
+        self.clear_plot(0)
+        self.update(0)
 
     def start(self):
         # Load the session data for the given year, weekend, and session
@@ -143,10 +161,13 @@ class F1Trace:
         button_ax = plt.axes([0.45, 0.92, 0.15, 0.05])
         text_ax = plt.axes([0.25, 0.92, 0.15, 0.05])
         clear_ax = plt.axes([0.65, 0.92, 0.15, 0.05])
+        params_ax = plt.axes([0.2, 0.02, 0.65, 0.05])
 
         button = Button(button_ax, "Show next lap")
         textbox = TextBox(text_ax, f"Laps / {self.total_laps}", initial=str(self.lap_number))
         clear = Button(clear_ax, "Clear plot")
+        paramsbox = TextBox(params_ax, 'Enter params:', initial='q:1')
+        paramsbox.on_submit(self.update_params)
 
         button.on_clicked(self.update)
         textbox.on_text_change(self.update_lap)
@@ -157,9 +178,9 @@ class F1Trace:
 
 
 if __name__ == "__main__":
-    year = 2022
-    track = "Australia" # Also available: "Bahrain", "Australia"
-    session = 'Q' # Also 'R', 'SS', 'S', 'FP1', 'FP2', 'FP3'
+    year = 2023
+    track = "Azerbaijan" # Also available: "Bahrain", "Australia"
+    session = 'R' # Also 'R', 'SS', 'S', 'FP1', 'FP2', 'FP3'
     driver = 'VER'
 
     generator = F1Trace(year, track, session, driver)
