@@ -7,13 +7,6 @@ from matplotlib.widgets import Button, TextBox
 import matplotlib.image as mpimg
 
 
-# RACE_MAP = {
-#     "Bahrain": "maps/bahrain.png",
-#     "Australia": "maps/melbourne_hr.png",
-#     "Azerbaijan": "maps/baku.png",
-#     "Miami": "maps/miami.png"
-# }
-
 class CoordAdjust:
     ratio = 1
     x_stretch = 1
@@ -70,16 +63,16 @@ class CoordAdjust:
         x = x - min(x) + min(plt_xlim)
         y = y - min(y) + min(plt_ylim)
 
-        # # Applying Horizontal/Vertical mirroring
-        # x = self.x_mirror * x
-        # y = self.y_mirror * y
+        # Makes vectors into 2D points
         pts = np.vstack((x, y)).T
 
+        # Rotate points around origin
         theta = np.radians(self.rotation)
         rotation_matrix = np.array([[np.cos(theta), -np.sin(theta)],
                                     [np.sin(theta), np.cos(theta)]])
         pts = np.dot(pts, rotation_matrix.T)
 
+        # Apply translation/stretch
         pts[:, 0] = pts[:, 0] * self.x_stretch + self.x_offset
         pts[:, 1] = pts[:, 1] * self.y_stretch + self.y_offset
 
@@ -149,20 +142,7 @@ class F1Trace:
         self.ax.set_aspect('equal')
 
         # Rotate trace to fit map
-        # adjust = COORD_ADJUST_FACTORS[self.event.Country]
-        adjust = CoordAdjust(ymir=True)
-        # x, y = adjust.rotate(x, y)
-
-        # # Plot driver's trace
-        # plt_xlim = self.ax.get_xlim(); xq = -min(plt_xlim) + max(plt_xlim)
-        # plt_ylim = self.ax.get_ylim(); yq = -min(plt_ylim) + max(plt_ylim)
-        # xlen = -min(x) + max(x); ylen = -min(y) + max(y)
-        # x = (x / xlen) * xq; y = (y / xlen) * xq
-        # x = x - min(x) + min(plt_xlim)
-        # y = y - min(y) + min(plt_ylim)
-
-        # points = adjust.generatePoints(x, y)
-        # segments = np.concatenate([points[:-1], points[1:]], axis=1)
+        adjust = COORD_ADJUST_FACTORS[self.event.Country]
         segments = adjust.generate(self.ax, x, y)
         lc = LineCollection(segments, cmap=mpl.cm.plasma, norm=plt.Normalize(speed.min(), speed.max()))
         lc.set_array(speed)
@@ -201,7 +181,7 @@ class F1Trace:
 
 if __name__ == "__main__":
     year = 2022
-    track = "Miami" # Also available: "Bahrain", "Australia"
+    track = "Australia" # Also available: "Bahrain", "Australia"
     session = 'Q' # Also 'R', 'SS', 'S', 'FP1', 'FP2', 'FP3'
     driver = 'VER'
 
