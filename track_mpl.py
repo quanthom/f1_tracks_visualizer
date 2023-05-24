@@ -27,29 +27,6 @@ class CoordAdjust:
         self.x_mirror = -1 if xmir is True else 1
         self.y_mirror = -1 if ymir is True else 1
 
-    def generatePoints(self, x, y):
-        xm = x * self.x_stretch + self.x_offset
-        ym = y * self.y_stretch + self.y_offset
-        return np.array([xm, ym]).T.reshape(-1, 1, 2) / self.ratio
-
-    def rotate(self, x, y):
-        """Rotate a set of points by a given angle."""
-        # Apply mirroring
-        x = self.x_mirror * x
-        y = self.y_mirror * y
-        points = np.vstack((x, y)).T
-        # points = np.array([x, y]).T
-
-        theta = np.radians(self.rotation)
-        rotation_matrix = np.array([
-            [np.cos(theta), -np.sin(theta)],
-            [np.sin(theta), np.cos(theta)],
-        ])
-
-        rotated_points = np.dot(points, rotation_matrix.T)
-        x_rotated, y_rotated = rotated_points[:, 0], rotated_points[:, 1]
-        return x_rotated, y_rotated
-
     def generate(self, axes, x, y):
         # Applying Horizontal/Vertical mirroring
         x = self.x_mirror * x
