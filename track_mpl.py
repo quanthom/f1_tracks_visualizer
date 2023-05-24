@@ -62,13 +62,14 @@ RACE_MAP = {
     "Bahrain": "maps/bahrain.png",
     "Australia": "maps/melbourne_hr.png",
     "Azerbaijan": "maps/baku.png",
-    "United States": "maps/miami.png"
+    "Miami": "maps/miami.png"
 }
 
 COORD_ADJUST_FACTORS = {
     "Bahrain": {'q': 1.0, 'xs': 0.8, 'ys': 0.81, 'xo': 87.0, 'yo': 111.0, 'rot': 0, 'xmir': False, 'ymir': True},
     "Australia": {'q': 1.0, 'xs': 0.735, 'ys': 0.745, 'xo': 137.0, 'yo': 20.0, 'rot': 0.7, 'xmir': False, 'ymir': True},
     "Azerbaijan": {'q': 1.0, 'xs': 0.794, 'ys': 0.76, 'xo': 71.0, 'yo': 185.0, 'rot': -2.0, 'xmir': False, 'ymir': True},
+    "Miami": {'q': 1, 'xs': 0.914, 'ys': 0.905, 'xo': 125.0, 'yo': 128.0, 'rot': -2.65, 'xmir': False, 'ymir': True},
 }
 
 
@@ -99,7 +100,7 @@ class F1Trace:
         plt.show()
 
     def plot_track(self):
-        mapimg = mpimg.imread(RACE_MAP[self.event.Country])
+        mapimg = mpimg.imread(RACE_MAP[self.event.Location])
         self.ax.imshow(mapimg)
         self.ax.autoscale(enable=False)
 
@@ -120,7 +121,7 @@ class F1Trace:
         self.ax.set_aspect('equal')
 
         # Rotate trace to fit map
-        adjust = CoordAdjust(**COORD_ADJUST_FACTORS[self.event.Country])
+        adjust = CoordAdjust(**COORD_ADJUST_FACTORS[self.event.Location])
         # adjust = CoordAdjust(**self.params) # Uncomment for debugging
         segments = adjust.generate(self.ax, x, y)
         lc = LineCollection(segments, cmap=mpl.cm.plasma, norm=plt.Normalize(speed.min(), speed.max()))
@@ -178,9 +179,9 @@ class F1Trace:
 
 
 if __name__ == "__main__":
-    year = 2023
-    track = "Azerbaijan" # Also available: "Bahrain", "Australia"
-    session = 'R' # Also 'R', 'SS', 'S', 'FP1', 'FP2', 'FP3'
+    year = 2022
+    track = "Miami"
+    session = 'Q' # Also 'R', 'SS', 'S', 'FP1', 'FP2', 'FP3'
     driver = 'VER'
 
     generator = F1Trace(year, track, session, driver)
