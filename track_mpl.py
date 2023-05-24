@@ -7,11 +7,12 @@ from matplotlib.widgets import Button, TextBox
 import matplotlib.image as mpimg
 
 
-RACE_MAP = {
-    "Bahrain": "maps/bahrain.png",
-    "Australia": "maps/melbourne_hr.png",
-    "Azerbaijan": "maps/baku.png"
-}
+# RACE_MAP = {
+#     "Bahrain": "maps/bahrain.png",
+#     "Australia": "maps/melbourne_hr.png",
+#     "Azerbaijan": "maps/baku.png",
+#     "Miami": "maps/miami.png"
+# }
 
 class CoordAdjust:
     ratio = 1
@@ -44,6 +45,7 @@ class CoordAdjust:
         x = self.x_mirror * x
         y = self.y_mirror * y
         points = np.vstack((x, y)).T
+        # points = np.array([x, y]).T
 
         theta = np.radians(self.rotation)
         rotation_matrix = np.array([
@@ -55,20 +57,60 @@ class CoordAdjust:
         x_rotated, y_rotated = rotated_points[:, 0], rotated_points[:, 1]
         return x_rotated, y_rotated
 
+    def generate(self, axes, x, y):
+        # Applying Horizontal/Vertical mirroring
+        x = self.x_mirror * x
+        y = self.y_mirror * y
+
+        # Plot driver's trace
+        plt_xlim = axes.get_xlim(); xq = -min(plt_xlim) + max(plt_xlim)
+        plt_ylim = axes.get_ylim(); yq = -min(plt_ylim) + max(plt_ylim)
+        xlen = -min(x) + max(x); ylen = -min(y) + max(y)
+        x = (x / xlen) * xq; y = (y / xlen) * xq
+        x = x - min(x) + min(plt_xlim)
+        y = y - min(y) + min(plt_ylim)
+
+        # # Applying Horizontal/Vertical mirroring
+        # x = self.x_mirror * x
+        # y = self.y_mirror * y
+        pts = np.vstack((x, y)).T
+
+        theta = np.radians(self.rotation)
+        rotation_matrix = np.array([[np.cos(theta), -np.sin(theta)],
+                                    [np.sin(theta), np.cos(theta)]])
+        pts = np.dot(pts, rotation_matrix.T)
+
+        pts[:, 0] = pts[:, 0] * self.x_stretch + self.x_offset
+        pts[:, 1] = pts[:, 1] * self.y_stretch + self.y_offset
+
+        pts = pts.reshape(-1, 1, 2) / self.ratio
+        segments = np.concatenate([pts[:-1], pts[1:]], axis=1)
+        return segments
+
+
+RACE_MAP = {
+    "Bahrain": "maps/bahrain.png",
+    "Australia": "maps/melbourne_hr.png",
+    "Azerbaijan": "maps/baku.png",
+    "United States": "maps/miami.png"
+}
+
 
 COORD_ADJUST_FACTORS = {
     "Bahrain": CoordAdjust(xs=0.805, ys=0.805, xo=80, yo=115, ymir=True),
     "Australia": CoordAdjust(xs=0.722, ys=0.718, xo=136, yo=27, rot=182.0, xmir=True),
-    "Azerbaijan": CoordAdjust(xs=0.78, ys=0.77, xo=85, yo=160, rot=179.0, xmir=True)
+    "Azerbaijan": CoordAdjust(xs=0.78, ys=0.77, xo=85, yo=160, rot=179.0, xmir=True),
+    "United States": CoordAdjust()
 }
+
 
 class F1Trace:
     def __init__(self, year, event, session, driver):
         self.year = year
         self.driver = driver
         self.event = ff.get_event_schedule(year).get_event_by_name(event + " Grand Prix")
-        if event not in self.event.Country:
-            raise Exception(f"No event found for {event} in year {year}")
+        if event.lower() not in [x.lower() for x in [self.event.Country, self.event.Location, self.event.OfficialEventName]]:
+            raise Exception(f"No event found for {event} in {year}")
         self.session = self.event.get_session(session)
 
     def create_driver(self):
@@ -107,19 +149,21 @@ class F1Trace:
         self.ax.set_aspect('equal')
 
         # Rotate trace to fit map
-        adjust = COORD_ADJUST_FACTORS[self.event.Country]
-        x, y = adjust.rotate(x, y)
+        # adjust = COORD_ADJUST_FACTORS[self.event.Country]
+        adjust = CoordAdjust(ymir=True)
+        # x, y = adjust.rotate(x, y)
 
-        # Plot driver's trace
-        plt_xlim = self.ax.get_xlim(); xq = -min(plt_xlim) + max(plt_xlim)
-        plt_ylim = self.ax.get_ylim(); yq = -min(plt_ylim) + max(plt_ylim)
-        xlen = -min(x) + max(x); ylen = -min(y) + max(y)
-        x = (x / xlen) * xq; y = (y / xlen) * xq
-        x = x - min(x) + min(plt_xlim)
-        y = y - min(y) + min(plt_ylim)
+        # # Plot driver's trace
+        # plt_xlim = self.ax.get_xlim(); xq = -min(plt_xlim) + max(plt_xlim)
+        # plt_ylim = self.ax.get_ylim(); yq = -min(plt_ylim) + max(plt_ylim)
+        # xlen = -min(x) + max(x); ylen = -min(y) + max(y)
+        # x = (x / xlen) * xq; y = (y / xlen) * xq
+        # x = x - min(x) + min(plt_xlim)
+        # y = y - min(y) + min(plt_ylim)
 
-        points = adjust.generatePoints(x, y)
-        segments = np.concatenate([points[:-1], points[1:]], axis=1)
+        # points = adjust.generatePoints(x, y)
+        # segments = np.concatenate([points[:-1], points[1:]], axis=1)
+        segments = adjust.generate(self.ax, x, y)
         lc = LineCollection(segments, cmap=mpl.cm.plasma, norm=plt.Normalize(speed.min(), speed.max()))
         lc.set_array(speed)
         lc.set_linewidth(1.0)
@@ -156,8 +200,8 @@ class F1Trace:
 
 
 if __name__ == "__main__":
-    year = 2018
-    track = "Australia" # Also available: "Bahrain", "Australia"
+    year = 2022
+    track = "Miami" # Also available: "Bahrain", "Australia"
     session = 'Q' # Also 'R', 'SS', 'S', 'FP1', 'FP2', 'FP3'
     driver = 'VER'
 
