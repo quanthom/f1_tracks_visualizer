@@ -62,7 +62,8 @@ RACE_MAP = {
     "Bahrain": "maps/bahrain.png",
     "Australia": "maps/melbourne_hr.png",
     "Azerbaijan": "maps/baku.png",
-    "Miami": "maps/miami.png"
+    "Miami": "maps/miami.png",
+    "Monaco": "maps/monaco_v2.png"
 }
 
 COORD_ADJUST_FACTORS = {
@@ -70,6 +71,7 @@ COORD_ADJUST_FACTORS = {
     "Australia": {'q': 1.0, 'xs': 0.735, 'ys': 0.745, 'xo': 137.0, 'yo': 20.0, 'rot': 0.7, 'xmir': False, 'ymir': True},
     "Azerbaijan": {'q': 1.0, 'xs': 0.794, 'ys': 0.76, 'xo': 71.0, 'yo': 185.0, 'rot': -2.0, 'xmir': False, 'ymir': True},
     "Miami": {'q': 1, 'xs': 0.914, 'ys': 0.905, 'xo': 125.0, 'yo': 128.0, 'rot': -2.65, 'xmir': False, 'ymir': True},
+    "Monaco": {'q': 0.9, 'xs': 0.54, 'ys': 0.54, 'xo': 935.0, 'yo': -350.0, 'rot': 49.0, 'xmir': False, 'ymir': True},
 }
 
 
@@ -180,7 +182,7 @@ class F1Trace:
 
 if __name__ == "__main__":
     year = 2022
-    track = "Miami"
+    track = "Monaco"
     session = 'Q' # Also 'R', 'SS', 'S', 'FP1', 'FP2', 'FP3'
     driver = 'VER'
 
