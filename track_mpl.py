@@ -64,7 +64,8 @@ RACE_MAP = {
     "Azerbaijan": "maps/baku.png",
     "Miami": "maps/miami.png",
     "Monaco": "maps/monaco_v2.png",
-    "Yas Island": "maps/yasmarina.png" # This map does not seem to be very accurate
+    "Barcelona": "maps/barcelona.png",
+    "Yas Island": "maps/yasmarina.png", # Not very accurate
 }
 
 COORD_ADJUST_FACTORS = {
@@ -73,6 +74,7 @@ COORD_ADJUST_FACTORS = {
     "Azerbaijan": {'q': 1.0, 'xs': 0.794, 'ys': 0.76, 'xo': 71.0, 'yo': 185.0, 'rot': -2.0, 'xmir': False, 'ymir': True},
     "Miami": {'q': 1, 'xs': 0.914, 'ys': 0.905, 'xo': 125.0, 'yo': 128.0, 'rot': -2.65, 'xmir': False, 'ymir': True},
     "Monaco": {'q': 0.9, 'xs': 0.54, 'ys': 0.54, 'xo': 935.0, 'yo': -350.0, 'rot': 49.0, 'xmir': False, 'ymir': True},
+    "Barcelona": {'q': 1.0, 'xs': 0.584, 'ys': 0.584, 'xo': 568.0, 'yo': 1098.0, 'rot': -124.7, 'xmir': True, 'ymir': False},
     "Yas Island": {'q': 1.0, 'xs': 0.404, 'ys': 0.385, 'xo': 2380.0, 'yo': 290.0, 'rot': 90.0, 'xmir': False, 'ymir': True},
 }
 
@@ -87,7 +89,7 @@ class F1Trace:
         # print(ff.get_event_schedule(year))
         self.event = ff.get_event_schedule(year).get_event_by_name(event + " Grand Prix")
         if event.lower() not in [x.lower() for x in [self.event.Country, self.event.Location, self.event.OfficialEventName]]:
-            raise Exception(f"No event found for {event} in {year}")
+            raise Exception(f"No event found in {year} for {event}. Got {[self.event.Country, self.event.Location, self.event.OfficialEventName]}")
         self.session = self.event.get_session(session)
 
     def create_driver(self):
@@ -186,7 +188,7 @@ class F1Trace:
 
 if __name__ == "__main__":
     year = 2022
-    track = "Abu Dhabi"
+    track = "Barcelona"
     session = 'Q' # Also 'R', 'SS', 'S', 'FP1', 'FP2', 'FP3'
     driver = 'VER'
 
