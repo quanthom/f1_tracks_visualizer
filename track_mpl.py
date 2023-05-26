@@ -99,9 +99,17 @@ class F1Trace:
         self.total_laps = len(self.driver_instance)
         self.lap_number = 1
 
-    def update_lap(self, text):
+    def select_lap(self, text):
         if text.isnumeric():
             self.lap_number = int(text)
+            self.clear_plot(0)
+            self.update(0)
+
+    def select_fastest_lap(self, val):
+        self.lap_number = int(self.driver_instance.pick_fastest().LapNumber)
+        self.textbox.set_val(self.lap_number)
+        self.clear_plot(0)
+        self.update(0)
 
     def clear_plot(self, val):
         self.ax.cla()
@@ -174,15 +182,15 @@ class F1Trace:
         clear_ax = plt.axes([0.65, 0.92, 0.15, 0.05])
         params_ax = plt.axes([0.2, 0.02, 0.65, 0.05])
 
-        button = Button(button_ax, "Show next lap")
-        textbox = TextBox(text_ax, f"Laps / {self.total_laps}", initial=str(self.lap_number))
+        button = Button(button_ax, "Show fastest lap")
+        self.textbox = TextBox(text_ax, f"Laps / {self.total_laps}", initial=str(self.lap_number))
         clear = Button(clear_ax, "Clear plot")
         paramsbox = TextBox(params_ax, 'Enter params:', initial='q:1')
-        paramsbox.on_submit(self.update_params)
 
-        button.on_clicked(self.update)
-        textbox.on_text_change(self.update_lap)
+        button.on_clicked(self.select_fastest_lap)
+        self.textbox.on_submit(self.select_lap)
         clear.on_clicked(self.clear_plot)
+        paramsbox.on_submit(self.update_params)
 
         self.plot_track()
         plt.show()
