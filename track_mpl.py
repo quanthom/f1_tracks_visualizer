@@ -5,7 +5,9 @@ from matplotlib import pyplot as plt
 from matplotlib.collections import LineCollection
 from matplotlib.widgets import Button, TextBox
 import matplotlib.image as mpimg
+import argparse
 
+DEBUG = False
 
 class CoordAdjust:
     ratio = 1
@@ -93,7 +95,6 @@ class F1Trace:
     def __init__(self, year, event, session, driver):
         self.year = year
         self.driver = driver
-        # print(ff.get_event_schedule(year))
         self.event = ff.get_event_schedule(year).get_event_by_name(event + " Grand Prix")
         if event.lower() not in [x.lower() for x in [self.event.Country, self.event.Location, self.event.OfficialEventName]]:
             raise Exception(f"No event found in {year} for {event}. Got {[self.event.Country, self.event.Location, self.event.OfficialEventName]}")
@@ -144,8 +145,10 @@ class F1Trace:
         self.ax.set_aspect('equal')
 
         # Rotate trace to fit map
-        adjust = CoordAdjust(**COORD_ADJUST_FACTORS[self.event.Location])
-        # adjust = CoordAdjust(**self.params) # Uncomment for debugging
+        if not DEBUG:
+            adjust = CoordAdjust(**COORD_ADJUST_FACTORS[self.event.Location])
+        else:
+            adjust = CoordAdjust(**self.params) # Uncomment for debugging
         segments = adjust.generate(self.ax, x, y)
         lc = LineCollection(segments, cmap=mpl.cm.plasma, norm=plt.Normalize(speed.min(), speed.max()))
         lc.set_array(speed)
@@ -185,27 +188,42 @@ class F1Trace:
         button_ax = plt.axes([0.45, 0.92, 0.15, 0.05])
         text_ax = plt.axes([0.25, 0.92, 0.15, 0.05])
         clear_ax = plt.axes([0.65, 0.92, 0.15, 0.05])
-        params_ax = plt.axes([0.2, 0.02, 0.65, 0.05])
 
         button = Button(button_ax, "Show fastest lap")
         self.textbox = TextBox(text_ax, f"Laps / {self.total_laps}", initial=str(self.lap_number))
         clear = Button(clear_ax, "Clear plot")
-        paramsbox = TextBox(params_ax, 'Enter params:', initial='q:1')
+
+        if DEBUG:
+            params_ax = plt.axes([0.2, 0.02, 0.65, 0.05])
+            paramsbox = TextBox(params_ax, 'Enter params:', initial='q:1')
+            paramsbox.on_submit(self.update_params)
 
         button.on_clicked(self.select_fastest_lap)
         self.textbox.on_submit(self.select_lap)
         clear.on_clicked(self.clear_plot)
-        paramsbox.on_submit(self.update_params)
+
 
         self.plot_track()
         plt.show()
 
 
 if __name__ == "__main__":
-    year = 2021
-    track = "Hungary"
-    session = 'Q' # Also 'R', 'SS', 'S', 'FP1', 'FP2', 'FP3'
-    driver = 'HAM'
+    # Create the parser
+    parser = argparse.ArgumentParser(description="Generate F1 driver traces on track maps")
+
+    # Add the arguments
+    parser.add_argument("driver", type=str, help="Name of the driver")
+    parser.add_argument("year", type=int, help="Year of the race")
+    parser.add_argument("track", type=str, help="Track of the race")
+    parser.add_argument("session", type=str, help="Session of the race")
+    parser.add_argument("--debug", action='store_true', help="Enable debug mode")
+    args = parser.parse_args()
+
+    year = args.year
+    track = args.track
+    session = args.session # Also 'R', 'SS', 'S', 'FP1', 'FP2', 'FP3'
+    driver = args.driver
+    DEBUG = args.debug
 
     generator = F1Trace(year, track, session, driver)
     generator.start()
