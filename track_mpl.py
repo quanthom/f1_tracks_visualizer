@@ -68,6 +68,7 @@ RACE_MAP = {
     "Montréal": "maps/canada.png",
     "Spielberg": "maps/austria.png",
     "Silverstone": "maps/silverstone.png",
+    "Budapest": "maps/hungary.png",
     "Yas Island": "maps/yasmarina.png", # Not very accurate
 }
 
@@ -81,6 +82,7 @@ COORD_ADJUST_FACTORS = {
     "Montréal": {'q': 1.0, 'xs': 0.298, 'ys': 0.301, 'xo': 76.0, 'yo': 415.0, 'rot': -77.8, 'xmir': False, 'ymir': True},
     "Spielberg": {'q': 1.0, 'xs': 0.697, 'ys': 0.703, 'xo': 208.0, 'yo': 111.0, 'rot': -0.4, 'xmir': False, 'ymir': True},
     "Silverstone": {'q': 2.28, 'xs': 1, 'ys': 1, 'xo': 3205.0, 'yo': 250.0, 'rot': 93.0, 'xmir': True, 'ymir': False},
+    "Budapest": {'q': 1.31, 'xs': 1.048, 'ys': 1.04, 'xo': -235.0, 'yo': 519.0, 'rot': -40.4, 'xmir': False, 'ymir': True},
     "Yas Island": {'q': 1.0, 'xs': 0.404, 'ys': 0.385, 'xo': 2380.0, 'yo': 290.0, 'rot': 90.0, 'xmir': False, 'ymir': True},
 }
 
@@ -201,7 +203,7 @@ class F1Trace:
 
 if __name__ == "__main__":
     year = 2021
-    track = "Silverstone"
+    track = "Hungary"
     session = 'Q' # Also 'R', 'SS', 'S', 'FP1', 'FP2', 'FP3'
     driver = 'HAM'
 
