@@ -67,6 +67,7 @@ RACE_MAP = {
     "Barcelona": "maps/barcelona.png",
     "Montréal": "maps/canada.png",
     "Spielberg": "maps/austria.png",
+    "Silverstone": "maps/silverstone.png",
     "Yas Island": "maps/yasmarina.png", # Not very accurate
 }
 
@@ -79,12 +80,12 @@ COORD_ADJUST_FACTORS = {
     "Barcelona": {'q': 1.0, 'xs': 0.584, 'ys': 0.584, 'xo': 568.0, 'yo': 1098.0, 'rot': -124.7, 'xmir': True, 'ymir': False},
     "Montréal": {'q': 1.0, 'xs': 0.298, 'ys': 0.301, 'xo': 76.0, 'yo': 415.0, 'rot': -77.8, 'xmir': False, 'ymir': True},
     "Spielberg": {'q': 1.0, 'xs': 0.697, 'ys': 0.703, 'xo': 208.0, 'yo': 111.0, 'rot': -0.4, 'xmir': False, 'ymir': True},
+    "Silverstone": {'q': 2.28, 'xs': 1, 'ys': 1, 'xo': 3205.0, 'yo': 250.0, 'rot': 93.0, 'xmir': True, 'ymir': False},
     "Yas Island": {'q': 1.0, 'xs': 0.404, 'ys': 0.385, 'xo': 2380.0, 'yo': 290.0, 'rot': 90.0, 'xmir': False, 'ymir': True},
 }
 
 
 class F1Trace:
-    default_params = {'q': 1, 'xs': 1, 'ys': 1, 'xo': 0, 'yo': 0, 'rot': 0, 'xmir': False, 'ymir': False}
     params = {'q': 1, 'xs': 1, 'ys': 1, 'xo': 0, 'yo': 0, 'rot': 0, 'xmir': False, 'ymir': False}
 
     def __init__(self, year, event, session, driver):
@@ -152,7 +153,7 @@ class F1Trace:
         plt.show()
 
     def update_params(self, text):
-        self.params = self.default_params
+        self.params = {'q': 1, 'xs': 1, 'ys': 1, 'xo': 0, 'yo': 0, 'rot': 0, 'xmir': False, 'ymir': False}
         import re
         pattern = re.compile(r"(\w+):(\-?[\w\.]+)")
         matches = pattern.findall(text)
@@ -164,7 +165,7 @@ class F1Trace:
                 self.params[key] = True if value == "True" else False
             else:
                 self.params[key] = float(value)
-        print(self.params)
+        print(f"generated parameters: {self.params}")
         self.clear_plot(0)
         self.update(0)
 
@@ -199,10 +200,10 @@ class F1Trace:
 
 
 if __name__ == "__main__":
-    year = 2022
-    track = "Austria"
+    year = 2021
+    track = "Silverstone"
     session = 'Q' # Also 'R', 'SS', 'S', 'FP1', 'FP2', 'FP3'
-    driver = 'VER'
+    driver = 'HAM'
 
     generator = F1Trace(year, track, session, driver)
     generator.start()
