@@ -81,6 +81,7 @@ RACE_MAP = {
     "Mexico City": "maps/mexico_v2.jpg",
     "São Paulo": "maps/brazil.png", # The trace does not fit well with map
     "Yas Island": "maps/yasmarina.png", # Not very accurate
+    "Istanbul": "maps/istanbul.jpg",
 }
 
 COORD_ADJUST_FACTORS = {
@@ -103,6 +104,7 @@ COORD_ADJUST_FACTORS = {
     "Mexico City": {'q': 1.06, 'xs': 0.999, 'ys': 1.0, 'xo': 1308.0, 'yo': 962.0, 'rot': 180.0, 'xmir': True, 'ymir': False},
     "São Paulo": {'q': 2.26, 'xs': 1.022, 'ys': 1, 'xo': 1070.0, 'yo': 2150.0, 'rot': -112.0, 'xmir': False, 'ymir': True},
     "Yas Island": {'q': 1.0, 'xs': 0.404, 'ys': 0.385, 'xo': 2380.0, 'yo': 290.0, 'rot': 90.0, 'xmir': False, 'ymir': True},
+    "Istanbul": {'q': 1.18, 'xs': 1.003, 'ys': 1, 'xo': 141.0, 'yo': 107.0, 'rot': 1.2, 'xmir': False, 'ymir': True},
 }
 
 
