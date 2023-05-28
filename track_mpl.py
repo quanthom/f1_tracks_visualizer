@@ -77,6 +77,8 @@ RACE_MAP = {
     "Marina Bay": "maps/singapore.png",
     "Suzuka": "maps/japan.png",
     "Lusail": "maps/solial_qatar.jpg",
+    "Mexico City": "maps/mexico_v2.jpg",
+    "São Paulo": "maps/brazil.png", # The trace does not fit well with map
     "Yas Island": "maps/yasmarina.png", # Not very accurate
 }
 
@@ -97,6 +99,8 @@ COORD_ADJUST_FACTORS = {
     "Marina Bay": {'q': 1.3, 'xs': 0.985, 'ys': 1, 'xo': 362.0, 'yo': 139.0, 'rot': 0, 'xmir': False, 'ymir': True},
     "Suzuka": {'q': 1.235, 'xs': 1, 'ys': 1, 'xo': 236.0, 'yo': 1044.0, 'rot': -61.0, 'xmir': True, 'ymir': False},
     "Lusail": {'q': 1.44, 'xs': 1.01, 'ys': 1.007, 'xo': 190.0, 'yo': 1960.0, 'rot': -89.5, 'xmir': False, 'ymir': True},
+    "Mexico City": {'q': 1.06, 'xs': 0.999, 'ys': 1.0, 'xo': 1308.0, 'yo': 962.0, 'rot': 180.0, 'xmir': True, 'ymir': False},
+    "São Paulo": {'q': 2.26, 'xs': 1.022, 'ys': 1, 'xo': 1070.0, 'yo': 2150.0, 'rot': -112.0, 'xmir': False, 'ymir': True},
     "Yas Island": {'q': 1.0, 'xs': 0.404, 'ys': 0.385, 'xo': 2380.0, 'yo': 290.0, 'rot': 90.0, 'xmir': False, 'ymir': True},
 }
 
