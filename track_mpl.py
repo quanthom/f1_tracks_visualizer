@@ -74,6 +74,7 @@ RACE_MAP = {
     "Spa-Francorchamps": "maps/belgium.png",
     "Zandvoort": "maps/Netherlands.png",
     "Monza": "maps/Monza.png",
+    "Marina Bay": "maps/singapore.png",
     "Yas Island": "maps/yasmarina.png", # Not very accurate
 }
 
@@ -91,6 +92,7 @@ COORD_ADJUST_FACTORS = {
     "Spa-Francorchamps": {'q': 1.999, 'xs': 1.0, 'ys': 0.98, 'xo': 2475.0, 'yo': 650.0, 'rot': 121.0, 'xmir': True, 'ymir': False},
     "Zandvoort": {'q': 1.26, 'xs': 1.005, 'ys': 1, 'xo': 155.0, 'yo': 105.0, 'rot': 1.1, 'xmir': False, 'ymir': True},
     "Monza": {'q': 2.038, 'xs': 1, 'ys': 1, 'xo': 3138.0, 'yo': -113.0, 'rot': 84.2, 'xmir': True, 'ymir': False},
+    "Marina Bay": {'q': 1.3, 'xs': 0.985, 'ys': 1, 'xo': 362.0, 'yo': 139.0, 'rot': 0, 'xmir': False, 'ymir': True},
     "Yas Island": {'q': 1.0, 'xs': 0.404, 'ys': 0.385, 'xo': 2380.0, 'yo': 290.0, 'rot': 90.0, 'xmir': False, 'ymir': True},
 }
 
