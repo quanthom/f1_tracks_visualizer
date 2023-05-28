@@ -71,6 +71,8 @@ RACE_MAP = {
     "Spielberg": "maps/austria.png",
     "Silverstone": "maps/silverstone.png",
     "Budapest": "maps/hungary.png",
+    "Spa-Francorchamps": "maps/belgium.png",
+    "Zandvoort": "maps/Netherlands.png",
     "Yas Island": "maps/yasmarina.png", # Not very accurate
 }
 
@@ -85,6 +87,8 @@ COORD_ADJUST_FACTORS = {
     "Spielberg": {'q': 1.0, 'xs': 0.697, 'ys': 0.703, 'xo': 208.0, 'yo': 111.0, 'rot': -0.4, 'xmir': False, 'ymir': True},
     "Silverstone": {'q': 2.28, 'xs': 1, 'ys': 1, 'xo': 3205.0, 'yo': 250.0, 'rot': 93.0, 'xmir': True, 'ymir': False},
     "Budapest": {'q': 1.31, 'xs': 1.048, 'ys': 1.04, 'xo': -235.0, 'yo': 519.0, 'rot': -40.4, 'xmir': False, 'ymir': True},
+    "Spa-Francorchamps": {'q': 1.999, 'xs': 1.0, 'ys': 0.98, 'xo': 2475.0, 'yo': 650.0, 'rot': 121.0, 'xmir': True, 'ymir': False},
+    "Zandvoort": {'q': 1.26, 'xs': 1.005, 'ys': 1, 'xo': 155.0, 'yo': 105.0, 'rot': 1.1, 'xmir': False, 'ymir': True},
     "Yas Island": {'q': 1.0, 'xs': 0.404, 'ys': 0.385, 'xo': 2380.0, 'yo': 290.0, 'rot': 90.0, 'xmir': False, 'ymir': True},
 }
 
