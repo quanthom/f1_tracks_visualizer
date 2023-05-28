@@ -1,6 +1,7 @@
 import fastf1 as ff
 import numpy as np
 import matplotlib as mpl
+mpl.use('TkAgg')
 from matplotlib import pyplot as plt
 from matplotlib.collections import LineCollection
 from matplotlib.widgets import Button, TextBox
@@ -136,13 +137,13 @@ class F1Trace:
     def clear_plot(self, val):
         self.ax.cla()
         self.plot_track()
-        plt.show()
 
     def plot_track(self):
         print(f"Loading map for event: {self.event.Location}")
         mapimg = mpimg.imread(RACE_MAP[self.event.Location])
         self.ax.imshow(mapimg)
         self.ax.autoscale(enable=False)
+        plt.show()
 
     # Create a LineCollection object to display the telemetry data as a racing line
     def update(self, val):
