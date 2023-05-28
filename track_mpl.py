@@ -75,6 +75,8 @@ RACE_MAP = {
     "Zandvoort": "maps/Netherlands.png",
     "Monza": "maps/Monza.png",
     "Marina Bay": "maps/singapore.png",
+    "Suzuka": "maps/japan.png",
+    "Lusail": "maps/solial_qatar.jpg",
     "Yas Island": "maps/yasmarina.png", # Not very accurate
 }
 
@@ -93,6 +95,8 @@ COORD_ADJUST_FACTORS = {
     "Zandvoort": {'q': 1.26, 'xs': 1.005, 'ys': 1, 'xo': 155.0, 'yo': 105.0, 'rot': 1.1, 'xmir': False, 'ymir': True},
     "Monza": {'q': 2.038, 'xs': 1, 'ys': 1, 'xo': 3138.0, 'yo': -113.0, 'rot': 84.2, 'xmir': True, 'ymir': False},
     "Marina Bay": {'q': 1.3, 'xs': 0.985, 'ys': 1, 'xo': 362.0, 'yo': 139.0, 'rot': 0, 'xmir': False, 'ymir': True},
+    "Suzuka": {'q': 1.235, 'xs': 1, 'ys': 1, 'xo': 236.0, 'yo': 1044.0, 'rot': -61.0, 'xmir': True, 'ymir': False},
+    "Lusail": {'q': 1.44, 'xs': 1.01, 'ys': 1.007, 'xo': 190.0, 'yo': 1960.0, 'rot': -89.5, 'xmir': False, 'ymir': True},
     "Yas Island": {'q': 1.0, 'xs': 0.404, 'ys': 0.385, 'xo': 2380.0, 'yo': 290.0, 'rot': 90.0, 'xmir': False, 'ymir': True},
 }
 
