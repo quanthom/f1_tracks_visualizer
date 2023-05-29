@@ -163,6 +163,11 @@ class F1Trace:
         self.ax.set_ylabel('Y position (m)')
         self.ax.set_aspect('equal')
 
+        # Plot the speed colormap legend
+        speedlegend = mpl.colors.Normalize(vmin=speed.min(), vmax=speed.max())
+        colormap = mpl.cm.plasma
+        legend = mpl.colorbar.ColorbarBase(self.speed_ax, norm=speedlegend, cmap=colormap, orientation="vertical")
+
         # Rotate trace to fit map
         if not DEBUG:
             adjust = CoordAdjust(**COORD_ADJUST_FACTORS[self.event.Location])
@@ -211,6 +216,10 @@ class F1Trace:
         button = Button(button_ax, "Show fastest lap")
         self.textbox = TextBox(text_ax, f"Laps / {self.total_laps}", initial=str(self.lap_number))
         clear = Button(clear_ax, "Clear plot")
+
+        track_box = self.ax.get_position()
+        self.speed_ax = plt.axes([0.93, track_box.y0, 0.03, track_box.height])
+        self.speed_ax.set_xlabel('Speed (km/h)', loc='center')
 
         if DEBUG:
             params_ax = plt.axes([0.2, 0.02, 0.65, 0.05])
