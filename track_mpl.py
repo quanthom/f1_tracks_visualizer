@@ -62,9 +62,9 @@ class CoordAdjust:
 
 
 RACE_MAP = {
-    "Bahrain": "maps/bahrain.png",
-    "Australia": "maps/melbourne_hr.png",
-    "Azerbaijan": "maps/baku.png",
+    "Sakhir": "maps/bahrain.png",
+    "Melbourne": "maps/melbourne_hr.png",
+    "Baku": "maps/baku.png",
     "Miami": "maps/miami.png",
     "Monaco": "maps/monaco_v2.png",
     "Barcelona": "maps/barcelona.png",
@@ -85,9 +85,9 @@ RACE_MAP = {
 }
 
 COORD_ADJUST_FACTORS = {
-    "Bahrain": {'q': 1.0, 'xs': 0.8, 'ys': 0.81, 'xo': 87.0, 'yo': 111.0, 'rot': 0, 'xmir': False, 'ymir': True},
-    "Australia": {'q': 1.0, 'xs': 0.735, 'ys': 0.745, 'xo': 137.0, 'yo': 20.0, 'rot': 0.7, 'xmir': False, 'ymir': True},
-    "Azerbaijan": {'q': 1.0, 'xs': 0.794, 'ys': 0.76, 'xo': 71.0, 'yo': 185.0, 'rot': -2.0, 'xmir': False, 'ymir': True},
+    "Sakhir": {'q': 1.0, 'xs': 0.8, 'ys': 0.81, 'xo': 87.0, 'yo': 111.0, 'rot': 0, 'xmir': False, 'ymir': True},
+    "Melbourne": {'q': 1.0, 'xs': 0.735, 'ys': 0.745, 'xo': 137.0, 'yo': 20.0, 'rot': 0.7, 'xmir': False, 'ymir': True},
+    "Baku": {'q': 1.0, 'xs': 0.794, 'ys': 0.76, 'xo': 71.0, 'yo': 185.0, 'rot': -2.0, 'xmir': False, 'ymir': True},
     "Miami": {'q': 1, 'xs': 0.914, 'ys': 0.905, 'xo': 125.0, 'yo': 128.0, 'rot': -2.65, 'xmir': False, 'ymir': True},
     "Monaco": {'q': 0.9, 'xs': 0.54, 'ys': 0.54, 'xo': 935.0, 'yo': -350.0, 'rot': 49.0, 'xmir': False, 'ymir': True},
     "Barcelona": {'q': 1.0, 'xs': 0.584, 'ys': 0.584, 'xo': 568.0, 'yo': 1098.0, 'rot': -124.7, 'xmir': True, 'ymir': False},
